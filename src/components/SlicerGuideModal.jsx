@@ -27,7 +27,7 @@ export default function SlicerGuideModal({ isOpen, onClose }) {
           After slicing your 3D model in <strong>Bambu Studio</strong>, check the top-right Sliced Information window for these two key values:
         </p>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--spacing-md)' }}>
+        <div className="slicer-guide-grid" style={{ gap: 'var(--spacing-md)' }}>
           <div style={{ padding: 'var(--spacing-md)', background: 'var(--color-surface-pearl)', border: '1px solid var(--color-hairline)', borderRadius: 'var(--radius-md)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
               <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#0066cc' }}></span>
