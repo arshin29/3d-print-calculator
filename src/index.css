@@ -1,0 +1,1416 @@
+/* ==========================================================================
+   BAMBU LAB P2S - 3D PRINTING COST & PRICING CALCULATOR (INR ₹)
+   Apple Design System Implementation based on DESIGN.md
+   ========================================================================== */
+
+:root {
+  /* Colors */
+  --color-primary: #0066cc;
+  --color-primary-focus: #0071e3;
+  --color-primary-on-dark: #2997ff;
+  --color-ink: #1d1d1f;
+  --color-body: #1d1d1f;
+  --color-body-on-dark: #ffffff;
+  --color-body-muted: #cccccc;
+  --color-ink-muted-80: #333333;
+  --color-ink-muted-48: #7a7a7a;
+  --color-divider-soft: #f0f0f0;
+  --color-hairline: rgba(0, 0, 0, 0.08);
+  --color-hairline-dark: rgba(255, 255, 255, 0.12);
+  --color-canvas: #ffffff;
+  --color-canvas-parchment: #f5f5f7;
+  --color-surface-pearl: #fafafc;
+  --color-surface-tile-1: #272729;
+  --color-surface-tile-2: #2a2a2c;
+  --color-surface-tile-3: #252527;
+  --color-surface-black: #000000;
+  --color-surface-chip-translucent: rgba(210, 210, 215, 0.64);
+  --color-on-primary: #ffffff;
+  --color-on-dark: #ffffff;
+
+  /* Typography Stack */
+  --font-display: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+  --font-body: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Spacing */
+  --spacing-xxs: 4px;
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 17px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 48px;
+  --spacing-section: 80px;
+
+  /* Rounded Radii */
+  --radius-none: 0px;
+  --radius-xs: 5px;
+  --radius-sm: 8px;
+  --radius-md: 11px;
+  --radius-lg: 18px;
+  --radius-pill: 9999px;
+  --radius-full: 9999px;
+
+  /* Single System Elevation (Drop Shadow only for product render) */
+  --shadow-product: rgba(0, 0, 0, 0.22) 3px 5px 30px 0;
+  --shadow-sheet: 0 20px 40px rgba(0, 0, 0, 0.14);
+}
+
+/* Base Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-canvas-parchment);
+  color: var(--color-body);
+  min-height: 100vh;
+  line-height: 1.47;
+  letter-spacing: -0.374px;
+  font-size: 17px;
+  font-weight: 400;
+  padding-bottom: 84px; /* clearance for floating-sticky-bar */
+}
+
+/* ==========================================================================
+   GLOBAL NAVIGATION (Apple True Black Nav, 44px)
+   ========================================================================== */
+.global-nav {
+  background-color: var(--color-surface-black);
+  color: var(--color-on-dark);
+  height: 44px;
+  position: relative;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+}
+
+.global-nav-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 var(--spacing-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.global-nav-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  text-decoration: none;
+  color: var(--color-on-dark);
+}
+
+.global-nav-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.global-nav-title {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.12px;
+  color: #f5f5f7;
+}
+
+.global-nav-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+  font-size: 12px;
+  color: #86868b;
+  letter-spacing: -0.12px;
+}
+
+.global-nav-telemetry {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.global-nav-telemetry-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background-color: #30d158;
+}
+
+/* ==========================================================================
+   SUB-NAV FROSTED (Sticky 52px, Parchment with Backdrop Blur)
+   ========================================================================== */
+.sub-nav-frosted {
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  height: 52px;
+  background-color: rgba(245, 245, 247, 0.82);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--color-hairline);
+  display: flex;
+  align-items: center;
+}
+
+.sub-nav-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 var(--spacing-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sub-nav-left {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-sm);
+}
+
+.sub-nav-tagline {
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.19;
+  letter-spacing: 0.231px;
+  color: var(--color-ink);
+}
+
+.sub-nav-badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-primary);
+  background: rgba(0, 102, 204, 0.08);
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sub-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+/* ==========================================================================
+   BUTTON GRAMMAR (Apple Buttons System)
+   ========================================================================== */
+
+/* Primary Pill CTA */
+.button-primary {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 400;
+  border-radius: var(--radius-pill);
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  transition: background-color 0.15s ease, transform 0.1s ease;
+  user-select: none;
+  text-decoration: none;
+}
+
+.button-primary:hover {
+  background-color: var(--color-primary-focus);
+}
+
+.button-primary:active {
+  transform: scale(0.95);
+}
+
+.button-primary:focus-visible {
+  outline: 2px solid var(--color-primary-focus);
+  outline-offset: 2px;
+}
+
+/* Large Store Hero Button */
+.button-store-hero {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  font-family: var(--font-body);
+  font-size: 17px;
+  font-weight: 400;
+  border-radius: var(--radius-pill);
+  padding: 12px 26px;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.button-store-hero:hover {
+  background-color: var(--color-primary-focus);
+}
+
+.button-store-hero:active {
+  transform: scale(0.95);
+}
+
+/* Secondary Ghost Pill */
+.button-secondary-pill {
+  background-color: transparent;
+  color: var(--color-primary);
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 400;
+  border-radius: var(--radius-pill);
+  padding: 9px 19px;
+  border: 1px solid var(--color-primary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  transition: background-color 0.15s ease, transform 0.1s ease, color 0.15s ease;
+}
+
+.button-secondary-pill:hover {
+  background-color: rgba(0, 102, 204, 0.05);
+}
+
+.button-secondary-pill:active {
+  transform: scale(0.95);
+}
+
+/* Dark Utility Button */
+.button-dark-utility {
+  background-color: var(--color-ink);
+  color: var(--color-on-dark);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.29;
+  letter-spacing: -0.224px;
+  border-radius: var(--radius-sm);
+  padding: 8px 15px;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: transform 0.1s ease, background-color 0.15s ease;
+}
+
+.button-dark-utility:hover {
+  background-color: #333336;
+}
+
+.button-dark-utility:active {
+  transform: scale(0.95);
+}
+
+/* Pearl Capsule Button */
+.button-pearl-capsule {
+  background-color: var(--color-surface-pearl);
+  color: var(--color-ink-muted-80);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  border-radius: var(--radius-md);
+  padding: 8px 14px;
+  border: 1px solid var(--color-hairline);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.button-pearl-capsule:hover {
+  background-color: #f0f0f4;
+  color: var(--color-ink);
+}
+
+.button-pearl-capsule:active {
+  transform: scale(0.95);
+}
+
+/* Circular Icon Button */
+.button-icon-circular {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface-chip-translucent);
+  color: var(--color-ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.button-icon-circular:hover {
+  background-color: rgba(190, 190, 198, 0.8);
+}
+
+.button-icon-circular:active {
+  transform: scale(0.95);
+}
+
+/* Inline text link */
+.text-link {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-size: 15px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.15s ease;
+}
+
+.text-link:hover {
+  color: var(--color-primary-focus);
+  text-decoration: underline;
+}
+
+.text-link-on-dark {
+  color: var(--color-primary-on-dark);
+  text-decoration: none;
+  font-size: 15px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.text-link-on-dark:hover {
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   APP WRAPPER & MAIN LAYOUT
+   ========================================================================== */
+.app-wrapper {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: var(--spacing-xl) var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xxl);
+}
+
+/* Hero Section */
+.hero-tile {
+  text-align: center;
+  padding: var(--spacing-lg) 0 var(--spacing-xl) 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.hero-headline {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.28px;
+  color: var(--color-ink);
+}
+
+.hero-subcopy {
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 400;
+  line-height: 1.25;
+  color: #6e6e73;
+  max-width: 680px;
+  letter-spacing: -0.15px;
+}
+
+/* Grid: Parameters (Left) and True Production Cost (Right) */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: var(--spacing-lg);
+  align-items: start;
+}
+
+/* ==========================================================================
+   STORE UTILITY CARDS (18px radius, white canvas, hairline border)
+   ========================================================================== */
+.store-utility-card {
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-hairline);
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  position: relative;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--color-divider-soft);
+}
+
+.card-title {
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.2px;
+  color: var(--color-ink);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.card-step-badge {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-ink-muted-48);
+  letter-spacing: -0.1px;
+}
+
+/* ==========================================================================
+   CONFIGURATOR CONTROLS (Pill Chips & Segmented Controls)
+   ========================================================================== */
+.input-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.input-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.input-label {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.29;
+  letter-spacing: -0.224px;
+  color: var(--color-ink);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.input-hint {
+  font-size: 12px;
+  color: var(--color-ink-muted-48);
+  letter-spacing: -0.12px;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.custom-input {
+  width: 100%;
+  height: 44px;
+  padding: 0 var(--spacing-md);
+  padding-right: 80px;
+  background-color: var(--color-canvas);
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--color-ink);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  -moz-appearance: textfield;
+}
+
+.custom-input::-webkit-outer-spin-button,
+.custom-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.custom-input:focus {
+  outline: none;
+  border-color: var(--color-primary-focus);
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.2);
+}
+
+.input-adornment {
+  position: absolute;
+  right: var(--spacing-md);
+  font-size: 13px;
+  color: var(--color-ink-muted-48);
+  pointer-events: none;
+}
+
+/* Configurator Option Chip Row (Pill Buttons) */
+.chips-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.configurator-option-chip {
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 400;
+  border-radius: var(--radius-pill);
+  padding: 6px 14px;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.1s ease;
+}
+
+.configurator-option-chip:hover {
+  border-color: rgba(0, 0, 0, 0.3);
+  background-color: var(--color-canvas-parchment);
+}
+
+.configurator-option-chip:active {
+  transform: scale(0.95);
+}
+
+.configurator-option-chip-selected {
+  border-color: var(--color-primary-focus);
+  background-color: rgba(0, 102, 204, 0.08);
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* Dual time grid */
+.dual-time-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-sm);
+}
+
+/* Filament Selection Grid */
+.filament-selector-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--spacing-xs);
+}
+
+.filament-card {
+  padding: var(--spacing-sm);
+  background: var(--color-surface-pearl);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.1s ease;
+}
+
+.filament-card:hover {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.filament-card:active {
+  transform: scale(0.98);
+}
+
+.filament-card.selected {
+  background: #ffffff;
+  border: 2px solid var(--color-primary);
+}
+
+.filament-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filament-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+}
+
+.filament-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-ink);
+  line-height: 1.3;
+}
+
+.filament-price-tag {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--color-ink-muted-80);
+}
+
+.filament-desc {
+  font-size: 11px;
+  color: var(--color-ink-muted-48);
+  line-height: 1.3;
+}
+
+/* Custom Spool Pricing Inputs */
+.custom-spool-pricing-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background-color: var(--color-canvas-parchment);
+  border-radius: var(--radius-sm);
+}
+
+/* Quantity Stepper (Pill Container) */
+.quantity-stepper {
+  display: inline-flex;
+  align-items: center;
+  background: var(--color-canvas);
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  border-radius: var(--radius-pill);
+  padding: 3px 6px;
+  gap: 8px;
+}
+
+.stepper-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  border: none;
+  background: var(--color-surface-pearl);
+  color: var(--color-ink);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.stepper-btn:hover {
+  background: #e5e5ea;
+}
+
+.stepper-btn:active {
+  transform: scale(0.92);
+}
+
+.stepper-input {
+  width: 50px;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  background: transparent;
+  color: var(--color-ink);
+  -moz-appearance: textfield;
+}
+
+.stepper-input::-webkit-outer-spin-button,
+.stepper-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Segmented Control (Apple Pill Segmented Switch) */
+.segmented-control {
+  display: inline-flex;
+  background-color: #e5e5ea;
+  border-radius: var(--radius-pill);
+  padding: 2px;
+}
+
+.segmented-option {
+  padding: 5px 14px;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--color-ink);
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.segmented-option.active {
+  background-color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+/* ==========================================================================
+   TRUE PRODUCTION COST CARD (Store Utility Card Breakdown)
+   ========================================================================== */
+.cost-summary-box {
+  background-color: var(--color-canvas);
+}
+
+.cost-hero-figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--spacing-sm) 0;
+}
+
+.cost-hero-value {
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.28px;
+  color: var(--color-ink);
+}
+
+.cost-hero-label {
+  font-size: 13px;
+  color: var(--color-ink-muted-48);
+  margin-top: 4px;
+  letter-spacing: -0.1px;
+}
+
+/* Chart Container */
+.donut-chart-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin: var(--spacing-xs) 0;
+}
+
+.donut-inner-stats {
+  position: absolute;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.donut-inner-rate {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-ink);
+  letter-spacing: -0.2px;
+}
+
+.donut-inner-sub {
+  font-size: 11px;
+  color: var(--color-ink-muted-48);
+}
+
+/* Itemized Cost List */
+.cost-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.cost-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface-pearl);
+  transition: background-color 0.15s ease;
+}
+
+.cost-item-row:hover {
+  background-color: #f0f0f4;
+}
+
+.cost-item-left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.cost-item-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+}
+
+.cost-item-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-ink);
+  letter-spacing: -0.15px;
+}
+
+.cost-item-detail {
+  font-size: 11px;
+  color: var(--color-ink-muted-48);
+}
+
+.cost-item-right {
+  text-align: right;
+}
+
+.cost-item-amount {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.cost-item-percent {
+  font-size: 11px;
+  color: var(--color-ink-muted-48);
+}
+
+/* Machine Specification Footnote */
+.machine-footnote {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--color-divider-soft);
+  font-size: 12px;
+  color: var(--color-ink-muted-48);
+}
+
+/* ==========================================================================
+   PRICING RECOMMENDATIONS (3 Product Comparison Tiles)
+   ========================================================================== */
+.pricing-section-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.section-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.section-title-group h2 {
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.374px;
+  color: var(--color-ink);
+}
+
+.section-subtitle {
+  font-size: 17px;
+  color: #6e6e73;
+  margin-top: 4px;
+  letter-spacing: -0.2px;
+}
+
+.pricing-tiles-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+  align-items: stretch;
+}
+
+/* Pricing Tile: Standard (White) */
+.pricing-tile {
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-hairline);
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--spacing-lg);
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+/* Pricing Tile: Recommended Commercial (Apple Dark Tile Contrast) */
+.pricing-tile.commercial-featured {
+  background-color: var(--color-surface-tile-1);
+  color: var(--color-body-on-dark);
+  border: 1px solid var(--color-hairline-dark);
+}
+
+.pricing-tile.commercial-featured .tier-name {
+  color: #ffffff;
+}
+
+.pricing-tile.commercial-featured .tier-subtitle {
+  color: var(--color-body-muted);
+}
+
+.pricing-tile.commercial-featured .tier-price-main {
+  color: #ffffff;
+}
+
+.pricing-tile.commercial-featured .tier-price-unit {
+  color: var(--color-body-muted);
+}
+
+.pricing-tile.commercial-featured .tier-metric-row {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.pricing-tile.commercial-featured .metric-label {
+  color: var(--color-body-muted);
+}
+
+.pricing-tile.commercial-featured .metric-value {
+  color: #ffffff;
+}
+
+.pricing-tile.commercial-featured .tier-badge-recommended {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Tile Header */
+.tile-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xs);
+}
+
+.tier-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background-color: rgba(0, 0, 0, 0.06);
+  color: var(--color-ink-muted-80);
+}
+
+.tier-name {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.25px;
+  color: var(--color-ink);
+}
+
+.tier-subtitle {
+  font-size: 13px;
+  color: var(--color-ink-muted-48);
+  margin-top: 2px;
+}
+
+/* Main Price Hero in Card */
+.tier-price-hero {
+  margin: var(--spacing-md) 0;
+  text-align: center;
+  padding: var(--spacing-md) 0;
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: var(--radius-md);
+}
+
+.commercial-featured .tier-price-hero {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.tier-price-main {
+  font-family: var(--font-display);
+  font-size: 42px;
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.28px;
+  color: var(--color-ink);
+}
+
+.tier-price-unit {
+  font-size: 13px;
+  color: var(--color-ink-muted-48);
+  margin-top: 4px;
+}
+
+.tier-batch-note {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--color-primary);
+  margin-top: 6px;
+}
+
+.commercial-featured .tier-batch-note {
+  color: var(--color-primary-on-dark);
+}
+
+/* Margin Slider Control */
+.margin-control-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: var(--spacing-md);
+}
+
+.margin-header-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.slider-input {
+  width: 100%;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+/* Tier Profit Metrics List */
+.tier-metrics-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: var(--spacing-lg);
+}
+
+.tier-metric-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--color-divider-soft);
+  font-size: 13px;
+}
+
+.metric-label {
+  color: var(--color-ink-muted-48);
+}
+
+.metric-value {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+/* Card Button Group */
+.tier-action-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  margin-top: auto;
+}
+
+/* ==========================================================================
+   FLOATING STICKY BAR (Apple's Signature Persistent Action Strip, 64px)
+   ========================================================================== */
+.floating-sticky-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background-color: rgba(245, 245, 247, 0.88);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-top: 1px solid var(--color-hairline);
+  z-index: 95;
+  display: flex;
+  align-items: center;
+}
+
+.sticky-bar-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 var(--spacing-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sticky-bar-left {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-md);
+}
+
+.sticky-bar-label {
+  font-size: 13px;
+  color: var(--color-ink-muted-48);
+  letter-spacing: -0.1px;
+}
+
+.sticky-bar-price {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--color-ink);
+  letter-spacing: -0.2px;
+}
+
+.sticky-bar-subtext {
+  font-size: 13px;
+  color: var(--color-ink-muted-80);
+}
+
+.sticky-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+/* ==========================================================================
+   MODAL DIALOGS (Apple macOS / iOS Sheet Aesthetics)
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 150;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md);
+}
+
+.modal-sheet {
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sheet);
+  border: 1px solid var(--color-hairline);
+  max-width: 680px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: var(--spacing-xl);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  animation: modalPop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalPop {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modal-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-sheet-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.25px;
+  color: var(--color-ink);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.modal-close-chip {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-canvas-parchment);
+  color: var(--color-ink);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.modal-close-chip:hover {
+  background-color: #e5e5ea;
+}
+
+.modal-close-chip:active {
+  transform: scale(0.92);
+}
+
+.config-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+}
+
+/* ==========================================================================
+   TOAST NOTIFICATION (Apple Capsule Alert)
+   ========================================================================== */
+.toast-notification {
+  position: fixed;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(29, 29, 31, 0.95);
+  color: #ffffff;
+  backdrop-filter: blur(20px);
+  padding: 10px 22px;
+  border-radius: var(--radius-pill);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: 14px;
+  font-weight: 400;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  z-index: 200;
+  animation: toastDrop 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes toastDrop {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* ==========================================================================
+   PRINT INVOICE / JOB SHEET STYLES
+   ========================================================================== */
+@media print {
+  .global-nav,
+  .sub-nav-frosted,
+  .floating-sticky-bar,
+  .modal-close-chip,
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .modal-overlay {
+    position: static !important;
+    background: transparent !important;
+    padding: 0 !important;
+  }
+
+  .modal-sheet {
+    box-shadow: none !important;
+    border: none !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+}
+
+/* ==========================================================================
+   RESPONSIVE BREAKPOINTS (per DESIGN.md: 1068px, 834px, 640px)
+   ========================================================================== */
+@media (max-width: 1068px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pricing-tiles-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-headline {
+    font-size: 34px;
+  }
+}
+
+@media (max-width: 834px) {
+  .global-nav-meta {
+    display: none;
+  }
+
+  .sub-nav-tagline {
+    font-size: 18px;
+  }
+
+  .section-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+  }
+
+  .config-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-wrapper {
+    padding: var(--spacing-md) var(--spacing-sm);
+  }
+
+  .sub-nav-container {
+    padding: 0 var(--spacing-sm);
+  }
+
+  .hero-headline {
+    font-size: 28px;
+  }
+
+  .hero-subcopy {
+    font-size: 17px;
+  }
+
+  .dual-time-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sticky-bar-left {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .sticky-bar-price {
+    font-size: 19px;
+  }
+
+  .button-primary,
+  .button-secondary-pill {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+}
