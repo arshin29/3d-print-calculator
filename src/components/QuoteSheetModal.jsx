@@ -51,7 +51,7 @@ export default function QuoteSheetModal({
         </div>
 
         {/* Printable quotation sheet */}
-        <div style={{
+        <div className="quote-sheet-content" style={{
           backgroundColor: '#ffffff',
           border: '1px solid rgba(0, 0, 0, 0.12)',
           borderRadius: 'var(--radius-md)',
@@ -83,7 +83,8 @@ export default function QuoteSheetModal({
             </div>
           </div>
 
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
+          <div className="quote-table-wrap">
+            <table className="quote-table" style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
             <thead>
               <tr style={{ borderBottom: '1px solid #f0f0f0', textAlign: 'left', color: '#86868b', fontSize: '12px' }}>
                 <th style={{ padding: '8px 0', fontWeight: 600 }}>Item Description</th>
@@ -94,35 +95,36 @@ export default function QuoteSheetModal({
             </thead>
             <tbody>
               <tr style={{ borderBottom: '1px solid #f0f0f0' }}>
-                <td style={{ padding: '12px 0' }}>
+                <td data-label="Item" style={{ padding: '12px 0' }}>
                   <strong style={{ color: '#1d1d1f' }}>Custom 3D Printed Component</strong>
                   <div style={{ fontSize: '12px', color: '#86868b' }}>
                     Weight: {inputs.filamentGrams}g | Slicer Time: {formatTimeDisplay(inputs.printHours, inputs.printMinutes)}
                   </div>
                 </td>
-                <td style={{ padding: '12px 8px', textAlign: 'center', fontFamily: 'var(--font-mono)', fontSize: '13px' }}>
+                <td data-label="Filament" style={{ padding: '12px 8px', textAlign: 'center', fontFamily: 'var(--font-mono)', fontSize: '13px' }}>
                   {selectedFilament?.name || 'Standard PLA'}
                 </td>
-                <td style={{ padding: '12px 8px', textAlign: 'right', fontFamily: 'var(--font-mono)' }}>
+                <td data-label="Rate" style={{ padding: '12px 8px', textAlign: 'right', fontFamily: 'var(--font-mono)' }}>
                   {formatINR(pricing.unitPrice)}
                 </td>
-                <td style={{ padding: '12px 0', textAlign: 'right', fontFamily: 'var(--font-mono)', fontWeight: 600, color: '#1d1d1f' }}>
+                <td data-label="Amount" style={{ padding: '12px 0', textAlign: 'right', fontFamily: 'var(--font-mono)', fontWeight: 600, color: '#1d1d1f' }}>
                   {formatINR(pricing.batchPrice)}
                 </td>
               </tr>
               <tr>
-                <td colSpan="2" style={{ padding: '12px 0', fontSize: '12px', color: '#86868b' }}>
+                <td data-label="Includes" colSpan="2" style={{ padding: '12px 0', fontSize: '12px', color: '#86868b' }}>
                   Includes: Bambu Lab P2S CoreXY printing, support removal, post-cure & protective packaging.
                 </td>
-                <td style={{ padding: '12px 8px', textAlign: 'right', color: '#86868b', fontSize: '13px' }}>
+                <td data-label="Quantity" style={{ padding: '12px 8px', textAlign: 'right', color: '#86868b', fontSize: '13px' }}>
                   Qty: {inputs.batchQuantity}
                 </td>
-                <td style={{ padding: '12px 0', textAlign: 'right', fontFamily: 'var(--font-mono)' }}>
+                <td data-label="Units" style={{ padding: '12px 0', textAlign: 'right', fontFamily: 'var(--font-mono)' }}>
                   {inputs.batchQuantity} pcs
                 </td>
               </tr>
             </tbody>
-          </table>
+            </table>
+          </div>
 
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 'var(--spacing-sm)', borderTop: '2px solid #1d1d1f' }}>
             <span style={{ fontSize: '16px', fontWeight: 600, color: '#1d1d1f' }}>Total Payable (INR):</span>
@@ -133,8 +135,8 @@ export default function QuoteSheetModal({
         </div>
 
         {/* Modal footer actions */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--spacing-sm)', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div style={{ display: 'flex', gap: 'var(--spacing-xs)' }}>
+        <div className="quote-modal-actions" style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--spacing-sm)', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div className="quote-modal-action-group" style={{ display: 'flex', gap: 'var(--spacing-xs)' }}>
             <button 
               type="button" 
               className="button-pearl-capsule" 
