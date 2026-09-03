@@ -21,6 +21,10 @@ import {
 
 const STORAGE_KEY_CONFIG = 'bambu_p2s_config_v1';
 const STORAGE_KEY_TIERS = 'bambu_p2s_tiers_v1';
+const frostedBarStyle = {
+  backdropFilter: 'saturate(180%) blur(20px)',
+  WebkitBackdropFilter: 'saturate(180%) blur(20px)',
+};
 
 export default function App() {
   // Slicer input parameters
@@ -266,7 +270,7 @@ Includes cleaning, support removal & protective packaging.`;
       </div>
 
       {/* 3. Apple Floating Sticky Bar (Persistent at bottom) */}
-      <div className="floating-sticky-bar">
+      <div className="floating-sticky-bar" style={frostedBarStyle}>
         <div className="sticky-bar-container">
           <div className="sticky-bar-left">
             <span className="sticky-bar-label">Recommended ({recommendedTier.name}):</span>
