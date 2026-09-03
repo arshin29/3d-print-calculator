@@ -88,13 +88,12 @@ body {
    GLOBAL NAVIGATION (Apple True Black Nav, 44px)
    ========================================================================== */
 .global-nav {
-  background-color: rgba(0, 0, 0, 0.78);
+  background-color: var(--color-surface-black);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   color: var(--color-on-dark);
   height: 44px;
-  position: sticky;
-  top: 0;
+  position: relative;
   z-index: 100;
   display: flex;
   align-items: center;
@@ -156,14 +155,13 @@ body {
 }
 
 /* ==========================================================================
-   SUB-NAV FROSTED (Sticky 52px, Parchment with Backdrop Blur)
+   SUB-NAV FROSTED (52px, Parchment with Backdrop Blur)
    ========================================================================== */
 .sub-nav-frosted {
-  position: sticky;
-  top: 44px;
+  position: relative;
   z-index: 90;
   height: 52px;
-  background-color: rgba(245, 245, 247, 0.82);
+  background-color: var(--color-canvas-parchment);
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   border-bottom: 1px solid var(--color-hairline);

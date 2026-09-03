@@ -1,10 +1,15 @@
 import React from 'react';
 
+const frostedBarStyle = {
+  backdropFilter: 'saturate(180%) blur(20px)',
+  WebkitBackdropFilter: 'saturate(180%) blur(20px)',
+};
+
 export default function Header({ onOpenConfig, onOpenSlicerGuide, onResetDefaults }) {
   return (
     <>
       {/* 1. Apple Global Nav (44px, True Black #000000) */}
-      <nav className="global-nav">
+      <nav className="global-nav" style={frostedBarStyle}>
         <div className="global-nav-container">
           <div className="global-nav-brand">
             <span className="global-nav-icon">
@@ -32,8 +37,8 @@ export default function Header({ onOpenConfig, onOpenSlicerGuide, onResetDefault
         </div>
       </nav>
 
-      {/* 2. Apple Sub-Nav Frosted (Sticky 52px, Parchment with Backdrop Blur) */}
-      <div className="sub-nav-frosted">
+      {/* 2. Apple Sub-Nav Frosted (52px, Parchment with Backdrop Blur) */}
+      <div className="sub-nav-frosted" style={frostedBarStyle}>
         <div className="sub-nav-container">
           <div className="sub-nav-left">
             <h1 className="sub-nav-tagline">3D Print Price Intelligence</h1>
